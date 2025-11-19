@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ReadMusic.App", "ReadMusic.App\ReadMusic.App.fsproj", "{851B8310-A911-42EA-891D-2978C98007FC}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ReadMusic.Tests", "ReadMusic.Tests\ReadMusic.Tests.fsproj", "{84A11823-68FA-4102-B8E8-9518A7F99267}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{851B8310-A911-42EA-891D-2978C98007FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{851B8310-A911-42EA-891D-2978C98007FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{851B8310-A911-42EA-891D-2978C98007FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A11823-68FA-4102-B8E8-9518A7F99267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A11823-68FA-4102-B8E8-9518A7F99267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A11823-68FA-4102-B8E8-9518A7F99267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A11823-68FA-4102-B8E8-9518A7F99267}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
