@@ -2,28 +2,26 @@
 
 open ReadMusic.App.Domain.TrackParser
 open ReadMusic.App.Infrastructure.FileSystem
+open System.Diagnostics
 open System.IO
 
 [<EntryPoint>]
 let main _ =
-    let rootPath = "/media/ximki-vinki/C487EA472D10D620/music/Era/1996 - Era"
+    let rootPath = "/media/ximki-vinki/C487EA472D10D620/music/Era"
+
+    let sw = System.Diagnostics.Stopwatch.StartNew()
+    let mutable count = 0
 
     scanDirectoryRecursively rootPath
-    |> Seq.sortBy Path.GetFileName
+    |> Seq.sortBy System.IO.Path.GetFileName
     |> Seq.iter (fun path ->
-        printfn "──────────────────────────"
-        match parse path with
-        | None ->
-            eprintfn $"Failed to read: {path}"
-        | Some track ->
-            printfn $"File: {track.Path}"
-            printfn $"Container: {track.Container}"
-            printfn $"Extension: {track.Extension}"
-            printfn $"Tag types: {track.TagTypes}"
-            track.Number |> Option.iter (printfn "Track #: %s")
-            track.Metadata.Title  |> Option.iter (printfn "Title: %s")
-            track.Metadata.Artist |> Option.iter (printfn "Artist: %s")
-            track.Metadata.Album  |> Option.iter (printfn "Album: %s")
-            track.Metadata.Year   |> Option.iter (printfn "Year: %s")
+        count <- count + 1
+        printf "\rПрочитано %d файлов..." count
+        ignore (parse path)  // просто вызываем, результат не используем
     )
+
+    sw.Stop()
+    printfn "\n\n✅ Всего обработано файлов: %d" count
+    printfn "⏱  Время выполнения: %A" sw.Elapsed
+
     0
