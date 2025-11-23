@@ -8,10 +8,10 @@
   <ItemGroup>   
     <Compile Include="Domain\AudioFormat.fs" />
     <Compile Include="Domain\Meta.fs" />
-    <Compile Include="File.fs" />
     <Content Include="FT.md" />
     <Content Include="data.txt" />
-    <Compile Include="Program.fs" />
+    <Compile Include="File\Header.fs" />
+    <Compile Include="Program.fs" />  
   </ItemGroup>
 
 </Project>
