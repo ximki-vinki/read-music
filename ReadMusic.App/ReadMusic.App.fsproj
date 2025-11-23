@@ -9,8 +9,9 @@
     <Compile Include="Domain\AudioFormat.fs" />
     <Compile Include="Domain\TrackParser.fs" />
     <Content Include="FT.md" />
+    <Compile Include="Infrastructure\FileSystem.fs" />  
     <Content Include="data.txt" />
-    <Compile Include="Program.fs" />  
+    <Compile Include="Program.fs" />      
   </ItemGroup>
 
   <ItemGroup>
