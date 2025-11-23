@@ -7,13 +7,14 @@
 
   <ItemGroup>   
     <Compile Include="Domain\AudioFormat.fs" />
-    <Compile Include="Domain\Meta.fs" />
+    <Compile Include="Domain\TrackParser.fs" />
     <Content Include="FT.md" />
     <Content Include="data.txt" />
     <Compile Include="Program.fs" />  
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
   </ItemGroup>
 
