@@ -1,5 +1,7 @@
 module ReadMusic.App.Domain.Meta
 
+let requiredHeaderSize = 16
+
 module private Bytes =
     let startsWith (prefix: byte[]) (data: byte[]) : bool =
         prefix.Length <= data.Length &&
