@@ -7,48 +7,44 @@ open System.IO
 
 [<EntryPoint>]
 let main _ =
-    let rootPath = "/media/ximki-vinki/C487EA472D10D620/music/Era"
+    let rootPath = "/media/ximki-vinki/C487EA472D10D620/music/Мельница"
 
-    let mutable totalTime = 0L
-    let mutable ioTime = 0L
-    let mutable parseTime = 0L
+    let imageExts = set [".jpg"; ".jpeg"; ".png"; ".gif"; ".bmp"; ".tiff"; ".webp"]
+
+    let sw = Stopwatch.StartNew()
+    let results = ResizeArray<string * int64>() // (path, duration_ticks)
+    let mutable count = 0
 
     scanDirectoryRecursively rootPath
     |> Seq.sortBy Path.GetFileName
     |> Seq.iter (fun path ->
-        let t0 = Stopwatch.GetTimestamp()
+        if imageExts.Contains(Path.GetExtension(path).ToLowerInvariant()) then
+            // Пропускаем изображения
+            ()
+        else
+            count <- count + 1
+            printf "\r🔄 Обрабатываю %d: %s" count (Path.GetFileName path)
 
-        let stream, t1 =
-            let t = Stopwatch.GetTimestamp()
-            let s = File.OpenRead path
-            s, Stopwatch.GetTimestamp()
+            let t0 = Stopwatch.GetTimestamp()
+            ignore (parse path)
+            let t1 = Stopwatch.GetTimestamp()
+            let dt = t1 - t0
 
-        let res, t2 =
-            let t = Stopwatch.GetTimestamp()
-            let r = parse path
-            r, Stopwatch.GetTimestamp()
-
-        stream.Dispose()  // важно — если parse не забирает stream
-
-        let dt_io = t1 - t0
-        let dt_parse = t2 - t1
-        let dt_total = t2 - t0
-
-        ioTime <- ioTime + dt_io
-        parseTime <- parseTime + dt_parse
-        totalTime <- totalTime + dt_total
-
-        let ms_io = float dt_io * 1000.0 / float Stopwatch.Frequency
-        let ms_parse = float dt_parse * 1000.0 / float Stopwatch.Frequency
-        printfn "%s → I/O: %.1f мс, Parse: %.1f мс" (Path.GetFileName path) ms_io ms_parse
+            results.Add(path, dt)
     )
 
-    let ms_total = float totalTime * 1000.0 / float Stopwatch.Frequency
-    let ms_io = float ioTime * 1000.0 / float Stopwatch.Frequency
-    let ms_parse = float parseTime * 1000.0 / float Stopwatch.Frequency
+    sw.Stop()
 
-    printfn "\n📊 Итого: %.1f мс" ms_total
-    printfn "   I/O: %.1f мс (%.1f%%)" ms_io (100.0 * ms_io / ms_total)
-    printfn "   Parse: %.1f мс (%.1f%%)" ms_parse (100.0 * ms_parse / ms_total)
+    printfn "\n\n✅ Обработка завершена. Всего файлов: %d" results.Count
+    printfn "⏱  Общее время: %A\n" sw.Elapsed
+
+    // Топ-20 самых медленных
+    results
+    |> Seq.sortByDescending snd
+    |> Seq.truncate 20
+    |> Seq.iteri (fun i (path, dt) ->
+        let ms = (float dt) * 1000.0 / float Stopwatch.Frequency
+        printfn "%2d. [%.1f ms] %s" (i + 1) ms path
+    )
 
     0
