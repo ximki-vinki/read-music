@@ -9,7 +9,7 @@ let parse (path: string) : Track option =
 
     try
         let step1 = sw.ElapsedMilliseconds
-        use file = TagLib.File.Create path
+        use file = TagLib.File.Create(path)
         let step2 = sw.ElapsedMilliseconds
         let tag = file.Tag
         let step3 = sw.ElapsedMilliseconds
@@ -31,8 +31,8 @@ let parse (path: string) : Track option =
         let step4 = sw.ElapsedMilliseconds
 
         if step4 > 10 then  // если >10 мс — логгируем
-            printfn "[SLOW] %s: Open=%d ms, Tag=%d ms, Build=%d ms" 
-                (Path.GetFileName path) (step2 - step1) (step3 - step2) (step4 - step3)
+            printfn "[SLOW] %s: Sum=%d ms, Open=%d ms, Tag=%d ms, Build=%d ms" 
+                (path) (step4) (step2 - step1) (step3 - step2) (step4 - step3)
 
         result
 
