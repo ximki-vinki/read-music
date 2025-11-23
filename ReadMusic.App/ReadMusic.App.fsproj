@@ -10,8 +10,11 @@
     <Compile Include="Domain\Meta.fs" />
     <Content Include="FT.md" />
     <Content Include="data.txt" />
-    <Compile Include="File\Header.fs" />
     <Compile Include="Program.fs" />  
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
   </ItemGroup>
 
 </Project>
