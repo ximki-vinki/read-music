@@ -22,8 +22,7 @@ let parse (path: string) : Track option =
                 Year   = Some (string tag.Year)
             }
         }
-        //TODO сделать потом debug
-        Log.Information("Успешный парсинг: {Path}", path)
+        Log.Debug("Успешный парсинг: {Path}", path)
         Some track
     with
     | :? CorruptFileException as ex ->

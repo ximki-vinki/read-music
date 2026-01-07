@@ -11,6 +11,7 @@
     <Content Include="FT.md" />
     <Compile Include="Infrastructure\FileSystem.fs" />  
     <Compile Include="Infrastructure\Database.fs" />  
+    <Compile Include="Infrastructure\Counter.fs" />  
     <Content Include="data.txt" />
     <Compile Include="Program.fs" />      
   </ItemGroup>
