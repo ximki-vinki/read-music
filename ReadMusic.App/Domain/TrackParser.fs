@@ -10,13 +10,10 @@ let parse (path: string) : Track option =
 
         Some {
             Number = Some (string tag.Track)
-
             Path = path
-
             Container = file.MimeType.Split('/')[1]
             TagTypes = tag.TagTypes
-
-            Extension = Path.GetExtension path |> (fun s -> s.ToLowerInvariant())
+            Extension = Path.GetExtension path |> _.ToLowerInvariant()
             Metadata = {
                 Title  = Option.ofObj tag.Title
                 Artist = Option.ofObj tag.FirstPerformer
@@ -24,4 +21,6 @@ let parse (path: string) : Track option =
                 Year   = Some (string tag.Year)
             }
         }
-    with _ -> None
+    with ex ->
+        eprintfn $"Error reading '{path}': {ex.Message}"
+        None

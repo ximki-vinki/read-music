@@ -10,11 +10,14 @@
     <Compile Include="Domain\TrackParser.fs" />
     <Content Include="FT.md" />
     <Compile Include="Infrastructure\FileSystem.fs" />  
+    <Compile Include="Infrastructure\Database.fs" />  
     <Content Include="data.txt" />
     <Compile Include="Program.fs" />      
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.FSharp" Version="4.9.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
   </ItemGroup>
