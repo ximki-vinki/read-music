@@ -1,9 +1,11 @@
 module ReadMusic.App.Infrastructure.Counter
 
-type Counter(onUpdate: unit -> unit) =
-    let mutable value = 0
+type Counter = {
+    Value: int
+}
 
-    member _.Value = value
-    member _.Increment() =
-        value <- value + 1
-        onUpdate()
+module Counter =
+    let zero = { Value = 0 }
+    
+    let increment counter = 
+        { counter with Value = counter.Value + 1 }

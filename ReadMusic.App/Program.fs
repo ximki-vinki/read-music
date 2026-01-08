@@ -1,8 +1,9 @@
-﻿module Program
+module Program
 
 open ReadMusic.App.Infrastructure.Counter
 open Serilog
 open ReadMusic.App.Domain.TrackParser
+open ReadMusic.App.Domain.ImportStats
 open ReadMusic.App.Infrastructure.FileSystem
 open ReadMusic.App.Infrastructure.Database
 open System.IO
@@ -35,36 +36,35 @@ let main _ =
         List.ofSeq musicExts
     )
 
-    let mutable lineRendered = false
+    let updateLine (stats: ImportStats) =
+        System.Console.Write($"\r успешно: {stats.Success.Value} | пропущено {stats.Skipped.Value}")
 
-    let rec updateLine () =
-        let s = success.Value
-        let k = skipped.Value
-        System.Console.Write($"\r успешно: {s} | пропущено {k}")
-        lineRendered <- true
-
-    and success: Counter = Counter(updateLine)
-    and skipped: Counter = Counter(updateLine)
-
-    scanDirectoryRecursively rootPath
-    |> Seq.filter (fun path ->
-        let ext = Path.GetExtension(path).ToLowerInvariant()
-        musicExts.Contains ext)
-    |> Seq.sortBy Path.GetFileName
-    |> Seq.iter (fun path ->
+    let processFile stats path =
         match parse path with
         | Some track ->
             insertTrack track
-            success.Increment()
-        | None -> skipped.Increment())
+            let updated = ImportStats.incrementSuccess stats
+            updateLine updated
+            updated
+        | None ->
+            let updated = ImportStats.incrementSkipped stats
+            updateLine updated
+            updated
 
-    if lineRendered then
-        System.Console.WriteLine()
+    let finalStats = 
+        scanDirectoryRecursively rootPath
+        |> Seq.filter (fun path ->
+            let ext = Path.GetExtension(path).ToLowerInvariant()
+            musicExts.Contains ext)
+        |> Seq.sortBy Path.GetFileName
+        |> Seq.fold processFile ImportStats.zero
+
+    System.Console.WriteLine()
 
     Log.Information(
         "Итог: успешно {Success}, пропущено {Skipped}",
-        success.Value,
-        skipped.Value
+        finalStats.Success.Value,
+        finalStats.Skipped.Value
     )
 
     Log.CloseAndFlush()
