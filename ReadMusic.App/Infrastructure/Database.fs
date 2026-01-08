@@ -9,6 +9,8 @@ let private connectionString = "Data Source=music.db;Mode=ReadWriteCreate"
 let private getConnection () =
     let conn = new SqliteConnection(connectionString)
     conn.Open()
+    use cmd = new SqliteCommand("PRAGMA busy_timeout = 5000", conn)
+    cmd.ExecuteNonQuery() |> ignore
     conn
 
 let ensureSchema () =
@@ -31,8 +33,8 @@ let ensureSchema () =
     
 
 let insertTrack (track: Track) =
-    use conn = new SqliteConnection(connectionString)
-    conn.Open()
+    use conn = getConnection()
+   
     SqlMapper.Execute(conn, """
         INSERT OR IGNORE INTO tracks 
         (path, number, container, tag_types, extension, title, artist, album, year)
