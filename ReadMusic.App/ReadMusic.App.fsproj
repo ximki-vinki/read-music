@@ -7,7 +7,7 @@
 
   <ItemGroup>   
     <Compile Include="Domain\AudioFormat.fs" />
-    <Compile Include="Domain\TrackParser.fs" />
+    <Compile Include="Domain\TrackReader.fs" />
     <Content Include="FT.md" />
     <Compile Include="Infrastructure\FileSystem.fs" />  
     <Compile Include="Infrastructure\Database.fs" />  

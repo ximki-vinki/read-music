@@ -1,19 +1,23 @@
 namespace ReadMusic.App.Domain
 
+type FileData = {
+    Path: string
+    FileSize: int64
+    FileModifiedAt: string
+    Extension: string
+}
+
 type TrackMetadata = {
     Title: string option
     Artist: string option
     Album: string option
     Year: string option
+    Number: string option
+    TagTypes: TagLib.TagTypes
+    Container: string
 }
 
 type Track = {
-    Number: string option
-    Path: string
-    FileSize: int64
-    FileModifiedAt: string
-    Container: string
-    TagTypes: TagLib.TagTypes
-    Extension: string  
+    FileData: FileData
     Metadata: TrackMetadata
 }

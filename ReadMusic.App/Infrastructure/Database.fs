@@ -53,13 +53,15 @@ let insertTrack (track: Track) =
         )
         """,
         {| 
-            Path = track.Path  
-            FileSize = track.FileSize
-            FileModifiedAt = track.FileModifiedAt
-            Container = track.Container
-            TagTypes = track.TagTypes.ToString()
-            Extension = track.Extension
-            Number = track.Number |> Option.defaultValue null
+            Path = track.FileData.Path
+            FileSize = track.FileData.FileSize
+            FileModifiedAt = track.FileData.FileModifiedAt
+            Extension = track.FileData.Extension
+
+            Container = track.Metadata.Container
+            TagTypes = track.Metadata.TagTypes.ToString()
+            Number = track.Metadata.Number |> Option.defaultValue null
+
             Title = track.Metadata.Title |> Option.defaultValue null
             Artist = track.Metadata.Artist |> Option.defaultValue null
             Album = track.Metadata.Album |> Option.defaultValue null

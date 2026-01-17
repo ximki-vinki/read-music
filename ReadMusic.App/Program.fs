@@ -2,11 +2,12 @@ module Program
 
 open ReadMusic.App.Infrastructure.Counter
 open Serilog
-open ReadMusic.App.Domain.TrackParser
+open ReadMusic.App.Domain.TrackReader
 open ReadMusic.App.Domain.ImportStats
 open ReadMusic.App.Infrastructure.FileSystem
 open ReadMusic.App.Infrastructure.Database
 open System.IO
+open ReadMusic.App.Domain
 
 [<EntryPoint>]
 let main _ =
@@ -40,8 +41,11 @@ let main _ =
         System.Console.Write($"\r успешно: {stats.Success.Value} | пропущено {stats.Skipped.Value}")
 
     let processFile stats path =
-        match parse path with
-        | Some track ->
+        let fileData = readFileData path
+
+        match parseMetadata path with
+        | Some metadata ->
+            let track = { FileData = fileData; Metadata = metadata }
             insertTrack track
             let updated = ImportStats.incrementSuccess stats
             updateLine updated
