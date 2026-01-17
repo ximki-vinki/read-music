@@ -8,10 +8,13 @@ let parse (path: string) : Track option =
     try
         use file = File.Create path
         let tag = file.Tag
-
+        let fileInfo = FileInfo(path)
+        
         let track = {
             Number = Some (string tag.Track)
             Path = path
+            FileSize = fileInfo.Length
+            FileModifiedAt = fileInfo.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
             Container = file.MimeType.Split('/')[1]
             TagTypes = tag.TagTypes
             Extension = Path.GetExtension path |> _.ToLowerInvariant()

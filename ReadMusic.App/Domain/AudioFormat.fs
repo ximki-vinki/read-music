@@ -10,6 +10,8 @@ type TrackMetadata = {
 type Track = {
     Number: string option
     Path: string
+    FileSize: int64
+    FileModifiedAt: string
     Container: string
     TagTypes: TagLib.TagTypes
     Extension: string  
